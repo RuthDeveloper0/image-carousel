@@ -1,0 +1,47 @@
+import React, { useState } from "react";
+import CarouselItem from "./CarouselItem";
+import "./Carousel.css";
+
+function Carousel({ images, intervalSeconds = 3 }) {
+  const [selected, setSelected] = useState(0);
+
+  const move = (step) => {
+    setSelected((prev) => prev + step);
+  };
+
+  return (
+    <div className="carousel">
+      {images.map((imgSrc, index) => {
+        if (index !== selected) return null;
+
+        return (
+          <CarouselItem 
+            key={index} 
+            src={imgSrc} 
+            alt={`תמונה ${index + 1}`} 
+          />
+        );
+      })}
+
+      <button className="carousel-arrow prev" onClick={() => move(-1)}>
+        ❮
+      </button>
+      <button className="carousel-arrow next" onClick={() => move(1)}>
+        ❯
+      </button>
+
+      <div className="carousel-dots">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            className={index === selected ? "carousel-dot active" : "carousel-dot"}
+            onClick={() => setSelected(index)}
+            aria-label={`עבר לתמונה ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Carousel;
